@@ -23,15 +23,18 @@ window.PRE_CONFIG = {
   clinicName: "Clínica Infinitum",
   address: "Rua Úrsula Paulino, 1422 · sala 205 · Betânia · Belo Horizonte / MG",
 
-  // WhatsApp da recepção (só dígitos: 55 + DDD + número) para quem tiver dúvida.
-  supportWhatsapp: "",
+  // WhatsApp que recebe o resumo e o PDF da pré-consulta (só dígitos: 55 + DDD + número).
+  whatsappClinica: "5531997436696",
+
+  // WhatsApp da recepção para dúvidas (opcional).
+  supportWhatsapp: "5531997436696",
 
   // Link da política de privacidade (LGPD). Deixe "" se não houver.
   privacyUrl: "",
 
   medicas: {
     marina:    { nome: "Dra. Marina Hoehne",      area: "Dermatologia · pele, pintas e estética", crm: "CRM-MG 86157" },
-    sabrina:   { nome: "Dra. Sabrina Marmith",    area: "Saúde corporal, emagrecimento e longevidade", crm: "" },
+    sabrina:   { nome: "Dra. Sabrina Marmith",    area: "Saúde corporal, emagrecimento e longevidade", crm: "CRM-MG 81674" },
     franciele: { nome: "Dra. Franciele Oliveira", area: "Ortopedia e tratamento da dor", crm: "CRM-MG 72395" }
   }
 };

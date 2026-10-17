@@ -6,6 +6,7 @@
 <title>Pré-consulta · Clínica Infinitum</title>
 <meta name="robots" content="noindex">
 <script src="config.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{--navy:#07182E;--navy2:#174E82;--gold:#C99A24;--gold2:#E2C275;--cream:#F7F3EC;--line:#E2DACB;--ink:#1D2633;--mut:#6F7782;--ok:#14766C;--red:#B3261E}
 *{box-sizing:border-box}
@@ -55,6 +56,14 @@ button:disabled{opacity:.5}
 .care{background:#FBEFEE;border-left:3px solid var(--red);padding:12px;border-radius:6px;text-align:left;font-size:14px;line-height:1.5;margin-top:16px}
 .foot{font-size:11.5px;color:var(--mut);text-align:center;margin-top:18px;line-height:1.5}
 .consent{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.45}
+.send{display:grid;gap:10px;margin-top:18px;text-align:left}
+.send button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 16px}
+.send .n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-size:14px}
+.send small{display:block;font-weight:500;font-size:12.5px;opacity:.8;margin-top:2px}
+.wa{background:#1F8A4C;color:#fff}
+.pdf{background:var(--navy);color:#fff}
+.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--line);font-size:14px}
+.sent{opacity:.55}
 .consent input{width:22px;height:22px;flex:none;margin-top:1px}
 </style>
 </head>
@@ -85,7 +94,7 @@ function clear(){ try { localStorage.removeItem(KEY); } catch(e){} }
 
 /* ---------------- PERGUNTAS ---------------- */
 var SIMNAO = ['Sim','Não'];
-var COMUM_ID = { k:'Você', t:'Seus dados', lead:'Leva menos de 15 minutos. As respostas vão apenas para a sua médica e deixam a consulta mais completa.', q:[
+var COMUM_ID = { k:'Você', t:'Seus dados', lead:'Leva menos de 15 minutos. No final você envia a sua ficha pelo WhatsApp da clínica, e ela chega para a sua médica.', q:[
   {id:'nome', t:'Nome completo', type:'text', req:1},
   {id:'nasc', t:'Data de nascimento', type:'date', req:1},
   {id:'sexo', t:'Sexo', type:'one', o:['Feminino','Masculino','Prefiro não informar']},
@@ -287,7 +296,7 @@ function qHtml(q){
   else if (q.type==='one') h += '<div class="chips">'+q.o.map(function(o){ return '<span class="chip'+(v===o?' on':'')+'" data-one="'+q.id+'" data-v="'+esc(o)+'">'+esc(o)+'</span>'; }).join('')+'</div>';
   else if (q.type==='multi') h += '<div class="chips">'+q.o.map(function(o){ return '<span class="chip'+((v||[]).indexOf(o)>-1?' on':'')+'" data-multi="'+q.id+'" data-v="'+esc(o)+'">'+esc(o)+'</span>'; }).join('')+'</div>';
   else if (q.type==='scale') { h += '<div class="scale">'; for (var i=0;i<=10;i++) h += '<span class="chip'+(v===i?' on':'')+'" data-scale="'+q.id+'" data-v="'+i+'">'+i+'</span>'; h += '</div><div class="scale-l"><span>nada</span><span>muito</span></div>'; }
-  else if (q.type==='consent') h += '<label class="consent"><input type="checkbox" data-ck="'+q.id+'"'+(v?' checked':'')+'><span>Autorizo a Clínica Infinitum a usar estas informações para o meu atendimento e a entrar em contato comigo. As respostas são enviadas só para a médica que vai me atender e posso pedir a exclusão a qualquer momento.'+(CFG.privacyUrl?' <a href="'+esc(CFG.privacyUrl)+'" target="_blank">Política de privacidade</a>.':'')+'</span></label>';
+  else if (q.type==='consent') h += '<label class="consent"><input type="checkbox" data-ck="'+q.id+'"'+(v?' checked':'')+'><span>Autorizo a Clínica Infinitum a usar estas informações para o meu atendimento e a entrar em contato comigo. Vou enviar estas respostas pelo WhatsApp da clínica para a médica que vai me atender e posso pedir a exclusão a qualquer momento.'+(CFG.privacyUrl?' <a href="'+esc(CFG.privacyUrl)+'" target="_blank">Política de privacidade</a>.':'')+'</span></label>';
   return h + '</div>';
 }
 function bind(st){
@@ -341,26 +350,115 @@ function phq(a){ var t=0; for (var i=1;i<=9;i++) t += (a['phq'+i]||1)-1;
   var f = t<=4?'mínimo':t<=9?'leve':t<=14?'moderado':t<=19?'moderadamente grave':'grave';
   return { total:t, faixa:f, item9:(a.phq9||1)-1 }; }
 
-function submit(){
-  bN.disabled = true; bN.textContent = 'Enviando...';
-  var a = S.a, sc = sf36(a), ph = phq(a), md = CFG.medicas[S.medica];
-  var payload = { key: CFG.writeKey, medica: S.medica, medicaNome: md.nome, enviadoEm: new Date().toISOString(), respostas: a, sf36: sc, phq9: ph, origemLink: a._origem || '' };
-  var done = function(ok){ clear(); finish(ph, ok); };
-  if (!CFG.endpointUrl) { console.log('MODO TESTE — payload:', payload); done(true); return; }
-  fetch(CFG.endpointUrl, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) })
-    .then(function(){ done(true); })
-    .catch(function(){ bN.disabled=false; bN.textContent='Tentar de novo'; alertBox(); });
+function optText(id, v){
+  var all=[SF1,SF2,SF3,PHQ]; for (var k=0;k<all.length;k++){ var L=all[k].lik; for (var m=0;m<L.length;m++){ if (L[m][0]===id) return L[m][2][v-1]; } }
+  return v;
 }
-function alertBox(){ var e=document.getElementById('err'); e.textContent='Não conseguimos enviar agora. Verifique a internet e toque em "Tentar de novo". Suas respostas continuam salvas.'; e.style.display='block'; }
-function finish(ph){
+function fmt(v){ if (v==null||v==='') return ''; if (Array.isArray(v)) return v.join(', '); if (v===true) return 'Sim'; return String(v); }
+function dataBR(iso){ if(!iso) return ''; var p=String(iso).split('-'); return p.length===3? p[2]+'/'+p[1]+'/'+p[0] : iso; }
+function idade(iso){ if(!iso) return ''; var n=new Date(iso), h=new Date(), a=h.getFullYear()-n.getFullYear(); if (h.getMonth()<n.getMonth()||(h.getMonth()===n.getMonth()&&h.getDate()<n.getDate())) a--; return isNaN(a)?'':a+' anos'; }
+function firstName(n){ return String(n||'').trim().split(/\s+/)[0]||''; }
+
+function buildData(){
+  var a=S.a, md=CFG.medicas[S.medica], ST=steps(), sec=[];
+  ST.forEach(function(st){
+    var rows=[];
+    (st.q||[]).forEach(function(q){ if (q.type==='consent') return; var v=a[q.id]; if (q.type==='date') v=dataBR(v); v=fmt(v); if (v) rows.push([q.t, v]); });
+    (st.lik||[]).forEach(function(l){ var v=a[l[0]]; if (v) rows.push([l[1], optText(l[0], v)]); });
+    if (rows.length) sec.push({ t: st.t, k: st.k, rows: rows });
+  });
+  return { a:a, md:md, sec:sec, sf:sf36(a), ph:phq(a), quando:new Date() };
+}
+
+function resumoTexto(D){
+  var a=D.a, g=[];
+  (GANCHOS[S.medica]||[]).forEach(function(x){ if (a[x[0]]==='Sim, quero saber mais') g.push(x[1].replace(/^.*\((Dra\.[^)]+)\).*$/,'$1')); });
+  var t = '*Pré-consulta concluída · '+CFG.clinicName+'*\n\n' +
+    '*Paciente:* '+(a.nome||'')+(a.nasc?' ('+idade(a.nasc)+')':'')+'\n' +
+    '*Consulta com:* '+D.md.nome+'\n' +
+    (a.whats?'*WhatsApp:* '+a.whats+'\n':'') +
+    '\n*Motivo:* '+(a.queixa||'')+'\n' +
+    (a.tempo?'*Há quanto tempo:* '+a.tempo+'\n':'') +
+    (a.impacto!=null&&a.impacto!==''?'*Impacto na rotina:* '+a.impacto+'/10\n':'') +
+    (a.meta90?'*Meta em 90 dias:* '+a.meta90+'\n':'') +
+    (g.length?'\n*Tem interesse também em:* '+g.join(', ')+'\n':'') +
+    (a.bio==='Sim'?'*Quer a avaliação corporal (bioimpedância) antes da consulta*\n':'') +
+    '\nA ficha completa (com SF-36 e PHQ-9) segue em PDF.';
+  return t;
+}
+
+function buildPDF(D){
+  var J = window.jspdf && window.jspdf.jsPDF; if (!J) return null;
+  var doc = new J({ unit:'mm', format:'a4' }), W=210, M=16, y=0, a=D.a;
+  var NAVY=[7,24,46], GOLD=[201,154,36], INK=[29,38,51], MUT=[111,119,130];
+  function head(){
+    doc.setFillColor.apply(doc,NAVY); doc.rect(0,0,W,30,'F');
+    doc.setTextColor.apply(doc,GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.text('CLÍNICA INFINITUM', M, 11);
+    doc.setTextColor(255,255,255); doc.setFontSize(16); doc.text('Pré-consulta · '+D.md.nome, M, 20);
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(201,209,219);
+    doc.text(D.md.area+(D.md.crm?' · '+D.md.crm:''), M, 26);
+    y=40;
+  }
+  function need(h){ if (y+h>282){ doc.addPage(); head(); } }
+  function title(t){ need(14); doc.setDrawColor.apply(doc,GOLD); doc.setLineWidth(.6); doc.line(M,y,M+12,y); y+=5; doc.setFont('helvetica','bold'); doc.setFontSize(11.5); doc.setTextColor.apply(doc,NAVY); doc.text(t, M, y); y+=6; }
+  function row(k,v){
+    doc.setFontSize(9); var kw=doc.splitTextToSize(k, 78), vw=doc.splitTextToSize(String(v), W-2*M-84);
+    var h=Math.max(kw.length, vw.length)*4.2+2.2; need(h);
+    doc.setFont('helvetica','normal'); doc.setTextColor.apply(doc,MUT); doc.text(kw, M, y);
+    doc.setFont('helvetica','bold'); doc.setTextColor.apply(doc,INK); doc.text(vw, M+84, y);
+    y+=h; doc.setDrawColor(226,218,203); doc.setLineWidth(.2); doc.line(M,y-1.6,W-M,y-1.6); y+=1.2;
+  }
+  head();
+  title('Identificação');
+  row('Paciente', a.nome||''); row('Data de nascimento', dataBR(a.nasc)+(a.nasc?'  ('+idade(a.nasc)+')':''));
+  row('WhatsApp', a.whats||''); if (a._origem) row('Origem do link', a._origem);
+  row('Preenchido em', D.quando.toLocaleString('pt-BR'));
+  title('Indicadores');
+  var ph=D.ph; row('PHQ-9 (0 a 27)', ph.total+' · '+ph.faixa+(ph.item9>0?'  · ATENÇÃO: item 9 positivo':''));
+  Object.keys(D.sf).forEach(function(k){ if (D.sf[k]!=null) row('SF-36 · '+k, D.sf[k]+' / 100'); });
+  D.sec.forEach(function(s){ title(s.k+' · '+s.t); s.rows.forEach(function(r){ row(r[0], r[1]); }); });
+  var n=doc.getNumberOfPages();
+  for (var i=1;i<=n;i++){ doc.setPage(i); doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor.apply(doc,MUT);
+    doc.text(CFG.clinicName+' · '+(CFG.address||'')+'   ·   Documento confidencial, de uso da equipe médica   ·   '+i+'/'+n, W/2, 291, {align:'center'}); }
+  return doc;
+}
+
+function submit(){
+  bN.disabled = true; bN.textContent = 'Gerando a sua ficha...';
+  var D = buildData(), md = D.md;
+  if (CFG.endpointUrl) { try { fetch(CFG.endpointUrl, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({ key: CFG.writeKey, medica: S.medica, medicaNome: md.nome, enviadoEm: new Date().toISOString(), respostas: D.a, sf36: D.sf, phq9: D.ph, origemLink: D.a._origem || '' }) }).catch(function(){}); } catch(e){} }
+  finish(D);
+}
+
+function finish(D){
   nav.style.display='none'; document.getElementById('prog').style.width='100%';
-  var md = CFG.medicas[S.medica];
+  var md = D.md, a = D.a, wa = String(CFG.whatsappClinica||'').replace(/\D/g,'');
+  var doc = buildPDF(D), fname = 'Pre-consulta-'+(firstName(a.nome)||'paciente')+'-'+S.medica+'.pdf';
+  var blob = doc ? doc.output('blob') : null;
+  var file = (blob && typeof File==='function') ? new File([blob], fname, {type:'application/pdf'}) : null;
+  var canShare = !!(file && navigator.canShare && navigator.canShare({ files:[file] }));
   var h = '<div class="card done"><svg viewBox="0 0 120 50"><path d="M60 25c-10-14-22-18-32-18C14 7 6 15 6 25s8 18 22 18c10 0 22-4 32-18zm0 0c10 14 22 18 32 18 14 0 22-8 22-18S106 7 92 7C82 7 70 11 60 25z" fill="none" stroke="currentColor" stroke-width="4"/></svg>' +
-    '<h2>Pré-consulta concluída</h2><p class="lead">Obrigada! As suas respostas foram enviadas para a '+esc(md.nome)+'. Venha acompanhado(a) e, se tiver exames, traga no dia.</p><p class="lead">Estamos te esperando na '+esc(CFG.clinicName)+'.</p>';
-  if (ph.item9 > 0) h += '<div class="care"><b>Você não está sozinho(a).</b> Você contou que tem pensado em se ferir ou que seria melhor não estar aqui. A sua médica vai conversar com você com todo o cuidado. Se esses pensamentos ficarem fortes agora, ligue para o <b>CVV, no 188</b> (gratuito, 24 horas) ou procure o pronto-socorro mais próximo.</div>';
-  if (CFG.supportWhatsapp) h += '<p class="foot">Dúvidas? <a href="https://wa.me/'+esc(CFG.supportWhatsapp)+'">Fale com a recepção</a></p>';
+    '<h2>Falta só enviar, '+esc(firstName(a.nome))+'</h2><p class="lead">A sua ficha para a '+esc(md.nome)+' está pronta. Envie pelo WhatsApp da clínica em 2 toques:</p>' +
+    '<div class="send">' +
+      '<button class="wa" id="sWa"><span class="n">1</span><span>Enviar resumo no WhatsApp<small>Abre a conversa com a Clínica Infinitum</small></span></button>' +
+      (blob ? '<button class="pdf" id="sPdf"><span class="n">2</span><span>'+(canShare?'Enviar a ficha completa (PDF)':'Baixar a ficha completa (PDF)')+'<small>'+(canShare?'Escolha o WhatsApp e a conversa da Clínica Infinitum':'Depois anexe o arquivo na conversa da clínica (clipe 📎)')+'</small></span></button>' : '') +
+    '</div>' +
+    '<p class="lead" style="margin-top:16px">Venha acompanhado(a) e, se tiver exames, traga no dia. Estamos te esperando!</p>';
+  if (D.ph.item9 > 0) h += '<div class="care"><b>Você não está sozinho(a).</b> Você contou que tem pensado em se ferir ou que seria melhor não estar aqui. A sua médica vai conversar com você com todo o cuidado. Se esses pensamentos ficarem fortes agora, ligue para o <b>CVV, no 188</b> (gratuito, 24 horas) ou procure o pronto-socorro mais próximo.</div>';
+  h += '<p class="foot"><button class="ghost" id="sNew">Fazer uma nova pré-consulta</button></p>';
   app.innerHTML = h + '</div>';
-  S = { medica:null, step:0, a:{} };
+  document.getElementById('sWa').onclick = function(){
+    this.classList.add('sent');
+    var url = 'https://wa.me/'+wa+'?text='+encodeURIComponent(resumoTexto(D));
+    window.open(url, '_blank') || (location.href = url);
+  };
+  var bp = document.getElementById('sPdf');
+  if (bp) bp.onclick = function(){
+    bp.classList.add('sent');
+    if (canShare) { navigator.share({ files:[file], title:'Pré-consulta · '+(a.nome||''), text:'Ficha de pré-consulta · '+(a.nome||'')+' · '+md.nome }).catch(function(){}); return; }
+    var u = URL.createObjectURL(blob), l = document.createElement('a'); l.href=u; l.download=fname; document.body.appendChild(l); l.click(); setTimeout(function(){ URL.revokeObjectURL(u); l.remove(); }, 4000);
+  };
+  document.getElementById('sNew').onclick = function(){ clear(); S={ medica:null, step:0, a:{} }; render(); };
 }
 render();
 })();
