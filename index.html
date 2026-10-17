@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pré-consulta · Clínica Infinitum</title>
+<meta name="robots" content="noindex">
+<script src="config.js"></script>
+<style>
+:root{--navy:#07182E;--navy2:#174E82;--gold:#C99A24;--gold2:#E2C275;--cream:#F7F3EC;--line:#E2DACB;--ink:#1D2633;--mut:#6F7782;--ok:#14766C;--red:#B3261E}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;background:var(--cream);color:var(--ink);-webkit-text-size-adjust:100%}
+header{background:var(--navy);color:#fff;padding:18px 16px 16px}
+.wrap{max-width:640px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.3em;color:var(--gold2);font-weight:700}
+.brand svg{width:34px;color:var(--gold)}
+header h1{font-size:20px;margin:10px 0 2px;font-weight:700}
+header p{margin:0;font-size:13px;color:#C9D1DB}
+.bar{height:5px;background:#ffffff22;border-radius:3px;margin-top:14px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .3s}
+main{padding:18px 16px 120px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-bottom:14px}
+.step-k{font-size:11px;letter-spacing:.22em;color:var(--gold);font-weight:800;text-transform:uppercase}
+h2{font-size:20px;color:var(--navy);margin:6px 0 4px}
+.lead{font-size:14px;color:#4A5462;line-height:1.5;margin:0 0 6px}
+.q{margin:18px 0 0}
+.q>label,.q .lbl{display:block;font-size:15px;font-weight:600;color:var(--navy);margin-bottom:8px;line-height:1.35}
+.q .hint{font-size:12.5px;color:var(--mut);margin:-4px 0 8px}
+input[type=text],input[type=tel],input[type=email],input[type=date],input[type=number],textarea{width:100%;font:inherit;font-size:16px;padding:12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+textarea{min-height:84px;resize:vertical}
+input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:22px;padding:10px 14px;font-size:14.5px;cursor:pointer;user-select:none;color:var(--ink);line-height:1.2}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.scale{display:grid;grid-template-columns:repeat(11,1fr);gap:4px}
+.scale .chip{padding:10px 0;text-align:center;border-radius:8px;font-weight:700}
+.scale-l{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mut);margin-top:4px}
+.lik{border-top:1px solid var(--line);padding:14px 0 6px}
+.lik:first-of-type{border-top:0}
+.lik .lbl{font-size:14.5px;font-weight:600;margin-bottom:8px;color:var(--ink)}
+.lik .chips .chip{font-size:13.5px;padding:9px 12px}
+.intro{background:#EAF0F5;border-left:3px solid var(--gold);padding:10px 12px;border-radius:6px;font-size:13.5px;color:#2B3542;margin-bottom:6px}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+nav .wrap{display:flex;gap:10px}
+button{font:inherit;font-size:16px;font-weight:700;border-radius:12px;padding:14px 16px;border:0;cursor:pointer}
+.b1{flex:1;background:var(--navy);color:#fff}
+.b2{background:#fff;color:var(--navy);border:1.5px solid var(--line)}
+button:disabled{opacity:.5}
+.err{color:var(--red);font-size:13px;margin-top:6px;display:none}
+.pick{display:grid;gap:10px;margin-top:12px}
+.pick button{text-align:left;background:#fff;border:1.5px solid var(--line);color:var(--navy);padding:16px}
+.pick button small{display:block;font-weight:500;color:var(--mut);font-size:13px;margin-top:3px}
+.done{text-align:center;padding:30px 10px}
+.done svg{width:60px;color:var(--gold)}
+.care{background:#FBEFEE;border-left:3px solid var(--red);padding:12px;border-radius:6px;text-align:left;font-size:14px;line-height:1.5;margin-top:16px}
+.foot{font-size:11.5px;color:var(--mut);text-align:center;margin-top:18px;line-height:1.5}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.45}
+.consent input{width:22px;height:22px;flex:none;margin-top:1px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand"><svg viewBox="0 0 120 50"><path d="M60 25c-10-14-22-18-32-18C14 7 6 15 6 25s8 18 22 18c10 0 22-4 32-18zm0 0c10 14 22 18 32 18 14 0 22-8 22-18S106 7 92 7C82 7 70 11 60 25z" fill="none" stroke="currentColor" stroke-width="4"/></svg>INFINITUM</div>
+  <h1 id="hTitle">Pré-consulta</h1>
+  <p id="hSub">Clínica Infinitum · Betânia</p>
+  <div class="bar"><i id="prog"></i></div>
+</div></header>
+<main><div class="wrap" id="app"></div></main>
+<nav id="nav"><div class="wrap"><button class="b2" id="bBack">Voltar</button><button class="b1" id="bNext">Continuar</button></div></nav>
+
+<script>
+(function(){
+var CFG = window.PRE_CONFIG || {};
+var KEY = 'infinitum-pre-v1';
+var params = new URLSearchParams(location.search);
+var S = load() || { medica: null, step: 0, a: {} };
+var pm = (params.get('medica') || '').toLowerCase();
+if (pm === 'fran') pm = 'franciele';
+if (CFG.medicas && CFG.medicas[pm] && S.medica !== pm) { S = { medica: pm, step: 0, a: {} }; }
+if (params.get('origem')) S.a._origem = params.get('origem');
+
+function load(){ try { return JSON.parse(localStorage.getItem(KEY)); } catch(e){ return null; } }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
+function clear(){ try { localStorage.removeItem(KEY); } catch(e){} }
+
+/* ---------------- PERGUNTAS ---------------- */
+var SIMNAO = ['Sim','Não'];
+var COMUM_ID = { k:'Você', t:'Seus dados', lead:'Leva menos de 15 minutos. As respostas vão apenas para a sua médica e deixam a consulta mais completa.', q:[
+  {id:'nome', t:'Nome completo', type:'text', req:1},
+  {id:'nasc', t:'Data de nascimento', type:'date', req:1},
+  {id:'sexo', t:'Sexo', type:'one', o:['Feminino','Masculino','Prefiro não informar']},
+  {id:'whats', t:'WhatsApp', type:'tel', req:1},
+  {id:'email', t:'E-mail', type:'email'},
+  {id:'profissao', t:'Profissão', type:'text'},
+  {id:'origem', t:'Como conheceu a clínica?', type:'one', o:['Indicação de paciente','Indicação de médico ou profissional','Instagram','Google','Pesquisa ou ação da clínica','Convênio','Outro']},
+  {id:'acomp', t:'Você vem acompanhado(a)? Com quem?', hint:'A Dra. pede que você venha com alguém da sua rotina para participar das decisões.', type:'text'}
+]};
+var COMUM_MOTIVO = { k:'Motivo', t:'O que te traz à consulta', q:[
+  {id:'queixa', t:'Com as suas palavras, o que está te incomodando?', type:'area', req:1},
+  {id:'tempo', t:'Há quanto tempo?', type:'one', o:['Dias','Semanas','Meses','Mais de 1 ano']},
+  {id:'impacto', t:'De 0 a 10, quanto isso atrapalha sua vida, rotina ou autoestima?', type:'scale'},
+  {id:'jatratou', t:'Já tratou antes?', type:'one', o:['Não','Sim, sem resultado','Sim, melhorou mas voltou','Estou tratando']},
+  {id:'meta90', t:'O que você gostaria de conseguir nos próximos 90 dias?', type:'area'}
+]};
+
+var TRILHAS = {
+ marina: [
+  { k:'Pele', t:'Sua pele e o sol', q:[
+    {id:'m_fototipo', t:'Quando você pega sol, a sua pele...', type:'one', o:['Sempre queima, nunca bronzeia','Queima fácil, bronzeia pouco','Às vezes queima, bronzeia bem','Raramente queima','Nunca queima']},
+    {id:'m_sol', t:'Quanto sol você pega por semana?', type:'one', o:['Pouco','Moderado','Muito (esporte ou trabalho ao ar livre)']},
+    {id:'m_protetor', t:'Usa protetor solar?', type:'one', o:['Todos os dias','Às vezes','Só na praia ou piscina','Não uso']},
+    {id:'m_pintas', t:'Você tem muitas pintas pelo corpo?', type:'one', o:['Poucas','Muitas (mais de 50)','Não sei']},
+    {id:'m_alerta', t:'Alguma destas situações?', type:'multi', o:['Pinta que mudou de tamanho, cor ou forma','Pinta que coça ou sangra','Ferida que não cicatriza','Mancha ou casquinha que volta no rosto ou nas mãos','Nenhuma']},
+    {id:'m_cancer', t:'Você ou alguém da família já teve câncer de pele?', type:'multi', o:['Eu já tive','Familiar com melanoma','Familiar com outro câncer de pele','Ninguém','Não sei']}
+  ]},
+  { k:'Pele', t:'O que você quer cuidar', q:[
+    {id:'m_queixas', t:'Marque tudo o que te incomoda hoje', type:'multi', o:['Manchas','Melasma','Acne','Cicatrizes de acne','Rugas e linhas','Flacidez','Poros e textura','Olheiras','Queda de cabelo','Unhas','Coceira, alergia ou descamação','Pintas','Outro']},
+    {id:'m_espelho', t:'Quando você se olha no espelho, o que mais gostaria de mudar?', type:'area'},
+    {id:'m_rotina', t:'Qual é a sua rotina de cuidados com a pele hoje?', hint:'Produtos que usa de manhã e à noite', type:'area'},
+    {id:'m_procs', t:'Já fez algum destes?', type:'multi', o:['Toxina botulínica','Preenchimento','Bioestimulador','Peeling','Laser','Microagulhamento','Nenhum']},
+    {id:'m_meds', t:'Usa ou já usou?', type:'multi', o:['Isotretinoína (Roacutan)','Anticoncepcional','Reposição hormonal','Minoxidil','Nenhum']}
+  ]}
+ ],
+ sabrina: [
+  { k:'Corpo', t:'Peso, energia e objetivos', q:[
+    {id:'s_peso', t:'Peso atual (kg)', type:'number'},
+    {id:'s_altura', t:'Altura (cm)', type:'number'},
+    {id:'s_pesodes', t:'Peso que gostaria de ter (kg)', type:'number'},
+    {id:'s_maior', t:'Maior peso que já teve (kg)', type:'number'},
+    {id:'s_obj', t:'Qual é o seu objetivo principal?', type:'multi', o:['Emagrecer','Ganhar massa muscular','Mais energia e disposição','Envelhecer bem / longevidade','Performance no esporte','Controlar exames (glicose, colesterol)']},
+    {id:'s_energia', t:'De 0 a 10, como está a sua energia no dia a dia?', type:'scale'}
+  ]},
+  { k:'Corpo', t:'Histórico e rotina', q:[
+    {id:'s_tent', t:'O que já tentou para emagrecer?', type:'multi', o:['Dieta por conta própria','Nutricionista','Academia','Medicação oral','Caneta (semaglutida, tirzepatida...)','Nada ainda']},
+    {id:'s_caneta', t:'Usa alguma medicação para emagrecer hoje? Qual e dose?', type:'text'},
+    {id:'s_alim', t:'Como é a sua alimentação?', type:'multi', o:['Pulo refeições','Belisco ao longo do dia','Doces todos os dias','Como à noite / de madrugada','Bebo pouca água','Alimentação organizada']},
+    {id:'s_intestino', t:'Seu intestino funciona', type:'one', o:['Todos os dias','A cada 2 ou 3 dias','Menos que isso']},
+    {id:'s_ciclo', t:'Para mulheres: ciclo menstrual', type:'one', o:['Regular','Irregular','Menopausa','Não se aplica']},
+    {id:'s_exames', t:'Fez exames de sangue nos últimos 6 meses? Algo alterado?', type:'area'}
+  ]}
+ ],
+ franciele: [
+  { k:'Dor', t:'Onde e como dói', q:[
+    {id:'f_local', t:'Onde é a dor?', type:'multi', o:['Pescoço','Ombro','Cotovelo','Punho / mão','Coluna lombar','Quadril','Joelho','Tornozelo / pé','Vários lugares']},
+    {id:'f_lado', t:'Lado', type:'one', o:['Direito','Esquerdo','Os dois','Centro']},
+    {id:'f_eva', t:'De 0 a 10, qual a intensidade da dor nos piores momentos?', type:'scale'},
+    {id:'f_inicio', t:'Como começou?', type:'one', o:['Queda ou trauma','Esforço ou treino','Aos poucos, sem motivo','Depois de cirurgia']},
+    {id:'f_piora', t:'O que piora?', type:'multi', o:['Subir escada','Caminhar','Ficar sentado','Dormir','Treinar','Trabalhar','Levantar peso']},
+    {id:'f_noite', t:'A dor acorda você à noite?', type:'one', o:SIMNAO}
+  ]},
+  { k:'Dor', t:'Tratamentos e objetivo', q:[
+    {id:'f_trat', t:'O que já fez para essa dor?', type:'multi', o:['Remédio','Fisioterapia','Infiltração','Acupuntura','Cirurgia','Nada']},
+    {id:'f_exames', t:'Tem exames de imagem? Quais e quando?', hint:'Raio-X, ressonância, ultrassom. Traga no dia da consulta.', type:'area'},
+    {id:'f_esporte', t:'Pratica algum esporte? Qual e quantas vezes por semana?', type:'text'},
+    {id:'f_meta', t:'O que você quer voltar a fazer sem dor?', type:'area'}
+  ]}
+ ]
+};
+
+var SAUDE = { k:'Saúde', t:'Sua saúde em geral', q:[
+  {id:'doencas', t:'Tem algum destes?', type:'multi', o:['Pressão alta','Diabetes','Colesterol alto','Tireoide','Doença autoimune','Depressão ou ansiedade','Problema de coagulação','Nenhum']},
+  {id:'remedios', t:'Remédios que usa hoje (nome e dose)', type:'area'},
+  {id:'alergias', t:'Alergias (remédios, alimentos, produtos)', type:'text'},
+  {id:'cirurgias', t:'Cirurgias que já fez', type:'text'},
+  {id:'gest', t:'Está grávida, amamentando ou tentando engravidar?', type:'one', o:['Não','Grávida','Amamentando','Tentando engravidar','Não se aplica']},
+  {id:'fumo', t:'Fuma?', type:'one', o:['Não','Sim','Parei']},
+  {id:'alcool', t:'Bebida alcoólica', type:'one', o:['Não bebo','Socialmente','Toda semana','Quase todo dia']},
+  {id:'ativ', t:'Atividade física', type:'one', o:['Não pratico','1 a 2 vezes por semana','3 a 4 vezes','5 ou mais']},
+  {id:'sono', t:'Como está o seu sono?', type:'one', o:['Bom','Regular','Ruim']}
+]};
+
+/* SF-36 (versão RAND-36, de uso livre) */
+var LIM = ['Sim, dificulta muito','Sim, dificulta um pouco','Não, não dificulta'];
+var TEMPO6 = ['Todo o tempo','A maior parte do tempo','Boa parte do tempo','Algum tempo','Pouco tempo','Nunca'];
+var VF = ['Definitivamente verdadeiro','Quase sempre verdadeiro','Não sei','Quase sempre falso','Definitivamente falso'];
+var SF1 = { k:'Qualidade de vida', t:'Sua saúde e suas atividades', intro:'Questionário SF-36: mede como a sua saúde afeta o seu dia a dia. Não há resposta certa: marque o que mais se aproxima.', lik:[
+  ['sf1','Em geral, você diria que a sua saúde é:',['Excelente','Muito boa','Boa','Razoável','Ruim']],
+  ['sf2','Comparada a um ano atrás, como está a sua saúde agora?',['Muito melhor','Um pouco melhor','Quase a mesma','Um pouco pior','Muito pior']],
+  ['sf3','Atividades vigorosas (correr, levantar objetos pesados, esportes intensos). A sua saúde dificulta?',LIM],
+  ['sf4','Atividades moderadas (mover uma mesa, varrer a casa, caminhar). A sua saúde dificulta?',LIM],
+  ['sf5','Levantar ou carregar compras de supermercado',LIM],
+  ['sf6','Subir vários lances de escada',LIM],
+  ['sf7','Subir um lance de escada',LIM],
+  ['sf8','Curvar-se, ajoelhar-se ou agachar-se',LIM],
+  ['sf9','Andar mais de 1,5 km',LIM],
+  ['sf10','Andar vários quarteirões',LIM],
+  ['sf11','Andar um quarteirão',LIM],
+  ['sf12','Tomar banho ou vestir-se',LIM]
+]};
+var SF2 = { k:'Qualidade de vida', t:'Nas últimas 4 semanas', intro:'Por causa da sua saúde física, nas últimas 4 semanas, você...', lik:[
+  ['sf13','Diminuiu o tempo dedicado ao trabalho ou a outras atividades?',SIMNAO],
+  ['sf14','Fez menos do que gostaria?',SIMNAO],
+  ['sf15','Ficou limitado(a) no tipo de trabalho ou de atividade?',SIMNAO],
+  ['sf16','Teve dificuldade para trabalhar ou fazer as atividades (precisou de mais esforço)?',SIMNAO],
+  ['sf17','Por problemas emocionais (como se sentir deprimido ou ansioso): diminuiu o tempo dedicado ao trabalho ou a outras atividades?',SIMNAO],
+  ['sf18','Por problemas emocionais: fez menos do que gostaria?',SIMNAO],
+  ['sf19','Por problemas emocionais: deixou de fazer as atividades com o cuidado de sempre?',SIMNAO],
+  ['sf20','Quanto a sua saúde física ou emocional atrapalhou as suas atividades sociais (família, amigos, vizinhos)?',['De forma nenhuma','Ligeiramente','Moderadamente','Bastante','Extremamente']],
+  ['sf21','Quanta dor no corpo você teve?',['Nenhuma','Muito leve','Leve','Moderada','Forte','Muito forte']],
+  ['sf22','Quanto a dor atrapalhou o seu trabalho normal (em casa e fora)?',['De forma nenhuma','Um pouco','Moderadamente','Bastante','Extremamente']]
+]};
+var SF3 = { k:'Qualidade de vida', t:'Como você tem se sentido', intro:'Nas últimas 4 semanas, quanto tempo você...', lik:[
+  ['sf23','Se sentiu cheio(a) de vigor e de vontade?',TEMPO6],
+  ['sf24','Se sentiu muito nervoso(a)?',TEMPO6],
+  ['sf25','Se sentiu tão para baixo que nada conseguia te animar?',TEMPO6],
+  ['sf26','Se sentiu calmo(a) e tranquilo(a)?',TEMPO6],
+  ['sf27','Teve muita energia?',TEMPO6],
+  ['sf28','Se sentiu desanimado(a) e abatido(a)?',TEMPO6],
+  ['sf29','Se sentiu esgotado(a)?',TEMPO6],
+  ['sf30','Se sentiu feliz?',TEMPO6],
+  ['sf31','Se sentiu cansado(a)?',TEMPO6],
+  ['sf32','Quanto tempo a sua saúde física ou emocional atrapalhou as suas atividades sociais?',['Todo o tempo','A maior parte do tempo','Algum tempo','Pouco tempo','Nunca']],
+  ['sf33','Eu costumo adoecer um pouco mais facilmente que as outras pessoas',VF],
+  ['sf34','Eu sou tão saudável quanto qualquer pessoa que eu conheço',VF],
+  ['sf35','Eu acho que a minha saúde vai piorar',VF],
+  ['sf36','Minha saúde é excelente',VF]
+]};
+var PHQO = ['Nenhuma vez','Vários dias','Mais da metade dos dias','Quase todos os dias'];
+var PHQ = { k:'Bem-estar', t:'Nas últimas 2 semanas', intro:'Com que frequência você foi incomodado(a) por algum destes problemas? (PHQ-9)', lik:[
+  ['phq1','Pouco interesse ou pouco prazer em fazer as coisas',PHQO],
+  ['phq2','Se sentir para baixo, deprimido(a) ou sem perspectiva',PHQO],
+  ['phq3','Dificuldade para pegar no sono ou permanecer dormindo, ou dormir mais do que de costume',PHQO],
+  ['phq4','Se sentir cansado(a) ou com pouca energia',PHQO],
+  ['phq5','Falta de apetite ou comer demais',PHQO],
+  ['phq6','Se sentir mal consigo mesmo(a), achar que é um fracasso ou que decepcionou a família ou a si mesmo(a)',PHQO],
+  ['phq7','Dificuldade para se concentrar nas coisas, como ler ou ver televisão',PHQO],
+  ['phq8','Lentidão para se movimentar ou falar, a ponto de outras pessoas perceberem, ou o oposto: estar tão agitado(a) que fica andando de um lado para o outro',PHQO],
+  ['phq9','Pensar em se ferir de alguma maneira ou que seria melhor estar morto(a)',PHQO],
+  ['phq10','Se marcou algum problema: quanto ele dificultou o seu trabalho, a casa ou a convivência com as pessoas?',['Nenhuma dificuldade','Alguma dificuldade','Muita dificuldade','Extrema dificuldade']]
+]};
+
+var GANCHOS = {
+  marina:    [['g_sabrina','Gostaria também de orientação sobre peso, energia ou composição corporal? (Dra. Sabrina)'],['g_fran','Sente dor nas articulações, na coluna ou ao treinar? (Dra. Franciele)']],
+  sabrina:   [['g_marina','Gostaria de cuidar também da pele: flacidez, manchas, estrias ou queda de cabelo? (Dra. Marina)'],['g_fran','Sente dor nas articulações ou ao treinar? (Dra. Franciele)']],
+  franciele: [['g_sabrina','Gostaria de orientação sobre peso e composição corporal, que também aliviam as articulações? (Dra. Sabrina)'],['g_marina','Treina ao ar livre e gostaria de uma revisão de pintas e da pele? (Dra. Marina)']]
+};
+function FINAL(){ var g = (GANCHOS[S.medica]||[]).map(function(x){ return {id:x[0], t:x[1], type:'one', o:['Sim, quero saber mais','Agora não']}; });
+  return { k:'Para terminar', t:'Cuidado integrado', lead:'Na Clínica Infinitum atendem a Dra. Marina (dermatologia), a Dra. Sabrina (saúde corporal) e a Dra. Franciele (ortopedia e dor). Se fizer sentido, elas podem cuidar de você juntas.', q: g.concat([
+    {id:'bio', t:'Quer fazer a avaliação corporal (bioimpedância) com a nossa equipe antes da consulta?', type:'one', o:['Sim','Não']},
+    {id:'obs', t:'Algo mais que a médica precisa saber?', type:'area'},
+    {id:'lgpd', t:'', type:'consent', req:1}
+  ])};
+}
+
+function steps(){ return [COMUM_ID, COMUM_MOTIVO].concat(TRILHAS[S.medica] || []).concat([SAUDE, SF1, SF2, SF3, PHQ, FINAL()]); }
+
+/* ---------------- RENDER ---------------- */
+var app = document.getElementById('app'), bN = document.getElementById('bNext'), bB = document.getElementById('bBack'), nav = document.getElementById('nav');
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+function render(){
+  var M = CFG.medicas || {};
+  if (!S.medica || !M[S.medica]) {
+    nav.style.display='none';
+    document.getElementById('prog').style.width='0';
+    app.innerHTML = '<div class="card"><div class="step-k">Bem-vindo(a)</div><h2>Com quem é a sua consulta?</h2><p class="lead">Escolha a médica para abrir a pré-consulta certa.</p><div class="pick">' +
+      Object.keys(M).map(function(k){ return '<button data-m="'+k+'">'+esc(M[k].nome)+'<small>'+esc(M[k].area)+'</small></button>'; }).join('') + '</div></div>';
+    app.querySelectorAll('[data-m]').forEach(function(b){ b.onclick=function(){ S={medica:b.dataset.m, step:0, a:S.a||{}}; save(); render(); }; });
+    return;
+  }
+  var md = M[S.medica];
+  document.getElementById('hTitle').textContent = 'Pré-consulta · ' + md.nome;
+  document.getElementById('hSub').textContent = md.area;
+  nav.style.display='';
+  var ST = steps(); if (S.step >= ST.length) S.step = ST.length-1;
+  var st = ST[S.step];
+  document.getElementById('prog').style.width = Math.round((S.step)/(ST.length)*100)+'%';
+  var h = '<div class="card"><div class="step-k">'+(S.step+1)+' de '+ST.length+' · '+esc(st.k)+'</div><h2>'+esc(st.t)+'</h2>';
+  if (st.lead) h += '<p class="lead">'+esc(st.lead)+'</p>';
+  if (st.intro) h += '<div class="intro">'+esc(st.intro)+'</div>';
+  (st.q||[]).forEach(function(q){ h += qHtml(q); });
+  (st.lik||[]).forEach(function(l){ h += '<div class="lik" data-id="'+l[0]+'"><div class="lbl">'+esc(l[1])+'</div><div class="chips">' + l[2].map(function(o,i){ return '<span class="chip'+(S.a[l[0]]===i+1?' on':'')+'" data-v="'+(i+1)+'">'+esc(o)+'</span>'; }).join('') + '</div></div>'; });
+  h += '<div class="err" id="err">Responda os itens obrigatórios para continuar.</div></div>';
+  h += '<p class="foot">'+esc(CFG.clinicName||'')+' · '+esc(CFG.address||'')+'<br>As suas respostas ficam salvas neste aparelho até você concluir.</p>';
+  app.innerHTML = h;
+  bind(st);
+  bB.style.visibility = 'visible';
+  bN.textContent = S.step === ST.length-1 ? 'Concluir pré-consulta' : 'Continuar';
+  window.scrollTo(0,0);
+}
+function qHtml(q){
+  var v = S.a[q.id], h = '<div class="q" data-q="'+q.id+'">';
+  if (q.type !== 'consent') h += '<label>'+esc(q.t)+(q.req?' *':'')+'</label>';
+  if (q.hint) h += '<div class="hint">'+esc(q.hint)+'</div>';
+  if (q.type==='text'||q.type==='tel'||q.type==='email'||q.type==='date'||q.type==='number') h += '<input type="'+q.type+'" data-in="'+q.id+'" value="'+esc(v||'')+'"'+(q.type==='number'?' inputmode="decimal"':'')+'>';
+  else if (q.type==='area') h += '<textarea data-in="'+q.id+'">'+esc(v||'')+'</textarea>';
+  else if (q.type==='one') h += '<div class="chips">'+q.o.map(function(o){ return '<span class="chip'+(v===o?' on':'')+'" data-one="'+q.id+'" data-v="'+esc(o)+'">'+esc(o)+'</span>'; }).join('')+'</div>';
+  else if (q.type==='multi') h += '<div class="chips">'+q.o.map(function(o){ return '<span class="chip'+((v||[]).indexOf(o)>-1?' on':'')+'" data-multi="'+q.id+'" data-v="'+esc(o)+'">'+esc(o)+'</span>'; }).join('')+'</div>';
+  else if (q.type==='scale') { h += '<div class="scale">'; for (var i=0;i<=10;i++) h += '<span class="chip'+(v===i?' on':'')+'" data-scale="'+q.id+'" data-v="'+i+'">'+i+'</span>'; h += '</div><div class="scale-l"><span>nada</span><span>muito</span></div>'; }
+  else if (q.type==='consent') h += '<label class="consent"><input type="checkbox" data-ck="'+q.id+'"'+(v?' checked':'')+'><span>Autorizo a Clínica Infinitum a usar estas informações para o meu atendimento e a entrar em contato comigo. As respostas são enviadas só para a médica que vai me atender e posso pedir a exclusão a qualquer momento.'+(CFG.privacyUrl?' <a href="'+esc(CFG.privacyUrl)+'" target="_blank">Política de privacidade</a>.':'')+'</span></label>';
+  return h + '</div>';
+}
+function bind(st){
+  app.querySelectorAll('[data-in]').forEach(function(el){ el.oninput=function(){ S.a[el.dataset.in]=el.value; save(); }; });
+  app.querySelectorAll('[data-one]').forEach(function(el){ el.onclick=function(){ var id=el.dataset.one; S.a[id]=el.dataset.v; save(); el.parentNode.querySelectorAll('.chip').forEach(function(c){c.classList.toggle('on', c===el);}); }; });
+  app.querySelectorAll('[data-multi]').forEach(function(el){ el.onclick=function(){ var id=el.dataset.multi, arr=S.a[id]||[], o=el.dataset.v, i=arr.indexOf(o);
+    if (i>-1) arr.splice(i,1); else { if (/^(Nenhum|Nenhuma|Nada|Ninguém|Nada ainda)$/.test(o)) arr=[]; else arr=arr.filter(function(x){return !/^(Nenhum|Nenhuma|Nada|Ninguém|Nada ainda)$/.test(x);}); arr.push(o); }
+    S.a[id]=arr; save(); el.parentNode.querySelectorAll('.chip').forEach(function(c){ c.classList.toggle('on', arr.indexOf(c.dataset.v)>-1); }); }; });
+  app.querySelectorAll('[data-scale]').forEach(function(el){ el.onclick=function(){ S.a[el.dataset.scale]=+el.dataset.v; save(); el.parentNode.querySelectorAll('.chip').forEach(function(c){c.classList.toggle('on', c===el);}); }; });
+  app.querySelectorAll('.lik').forEach(function(row){ row.querySelectorAll('.chip').forEach(function(el){ el.onclick=function(){ S.a[row.dataset.id]=+el.dataset.v; save(); row.querySelectorAll('.chip').forEach(function(c){c.classList.toggle('on', c===el);}); }; }); });
+  app.querySelectorAll('[data-ck]').forEach(function(el){ el.onchange=function(){ S.a[el.dataset.ck]=el.checked; save(); }; });
+}
+function valid(st){
+  var ok = true;
+  (st.q||[]).forEach(function(q){ if (q.req && !S.a[q.id]) ok=false; });
+  if (st.lik && st.k !== 'Bem-estar') { /* qualidade de vida: todas as linhas */ st.lik.forEach(function(l){ if (!S.a[l[0]]) ok=false; }); }
+  if (st.k === 'Bem-estar') { for (var i=1;i<=9;i++) if (!S.a['phq'+i]) ok=false; }
+  return ok;
+}
+bN.onclick = function(){
+  var ST = steps(), st = ST[S.step];
+  if (!valid(st)) { var e=document.getElementById('err'); e.style.display='block'; e.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  if (S.step < ST.length-1) { S.step++; save(); render(); } else submit();
+};
+bB.onclick = function(){ if (S.step>0){ S.step--; save(); render(); } else { S.medica=null; save(); render(); } };
+
+/* ---------------- ESCORES ---------------- */
+function sf36(a){
+  function r(id, map){ var v=a[id]; return v ? map[v-1] : null; }
+  var A=[100,75,50,25,0], B=[0,50,100], C=[0,100], D6=[100,80,60,40,20,0], E6=[0,20,40,60,80,100], F5=[0,25,50,75,100];
+  var rec={};
+  ['sf1','sf2','sf20','sf22','sf34','sf36'].forEach(function(i){rec[i]=r(i,A);});
+  for (var i=3;i<=12;i++) rec['sf'+i]=r('sf'+i,B);
+  for (i=13;i<=19;i++) rec['sf'+i]=r('sf'+i,C);
+  ['sf21','sf23','sf26','sf27','sf30'].forEach(function(i){rec[i]=r(i,D6);});
+  ['sf24','sf25','sf28','sf29','sf31'].forEach(function(i){rec[i]=r(i,E6);});
+  ['sf32','sf33','sf35'].forEach(function(i){rec[i]=r(i,F5);});
+  function avg(ids){ var v=ids.map(function(i){return rec['sf'+i];}).filter(function(x){return x!=null;}); return v.length? Math.round(v.reduce(function(s,x){return s+x;},0)/v.length) : null; }
+  return {
+    'Capacidade funcional': avg([3,4,5,6,7,8,9,10,11,12]),
+    'Limitação por aspectos físicos': avg([13,14,15,16]),
+    'Limitação por aspectos emocionais': avg([17,18,19]),
+    'Vitalidade': avg([23,27,29,31]),
+    'Saúde mental': avg([24,25,26,28,30]),
+    'Aspectos sociais': avg([20,32]),
+    'Dor': avg([21,22]),
+    'Estado geral de saúde': avg([1,33,34,35,36])
+  };
+}
+function phq(a){ var t=0; for (var i=1;i<=9;i++) t += (a['phq'+i]||1)-1;
+  var f = t<=4?'mínimo':t<=9?'leve':t<=14?'moderado':t<=19?'moderadamente grave':'grave';
+  return { total:t, faixa:f, item9:(a.phq9||1)-1 }; }
+
+function submit(){
+  bN.disabled = true; bN.textContent = 'Enviando...';
+  var a = S.a, sc = sf36(a), ph = phq(a), md = CFG.medicas[S.medica];
+  var payload = { key: CFG.writeKey, medica: S.medica, medicaNome: md.nome, enviadoEm: new Date().toISOString(), respostas: a, sf36: sc, phq9: ph, origemLink: a._origem || '' };
+  var done = function(ok){ clear(); finish(ph, ok); };
+  if (!CFG.endpointUrl) { console.log('MODO TESTE — payload:', payload); done(true); return; }
+  fetch(CFG.endpointUrl, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) })
+    .then(function(){ done(true); })
+    .catch(function(){ bN.disabled=false; bN.textContent='Tentar de novo'; alertBox(); });
+}
+function alertBox(){ var e=document.getElementById('err'); e.textContent='Não conseguimos enviar agora. Verifique a internet e toque em "Tentar de novo". Suas respostas continuam salvas.'; e.style.display='block'; }
+function finish(ph){
+  nav.style.display='none'; document.getElementById('prog').style.width='100%';
+  var md = CFG.medicas[S.medica];
+  var h = '<div class="card done"><svg viewBox="0 0 120 50"><path d="M60 25c-10-14-22-18-32-18C14 7 6 15 6 25s8 18 22 18c10 0 22-4 32-18zm0 0c10 14 22 18 32 18 14 0 22-8 22-18S106 7 92 7C82 7 70 11 60 25z" fill="none" stroke="currentColor" stroke-width="4"/></svg>' +
+    '<h2>Pré-consulta concluída</h2><p class="lead">Obrigada! As suas respostas foram enviadas para a '+esc(md.nome)+'. Venha acompanhado(a) e, se tiver exames, traga no dia.</p><p class="lead">Estamos te esperando na '+esc(CFG.clinicName)+'.</p>';
+  if (ph.item9 > 0) h += '<div class="care"><b>Você não está sozinho(a).</b> Você contou que tem pensado em se ferir ou que seria melhor não estar aqui. A sua médica vai conversar com você com todo o cuidado. Se esses pensamentos ficarem fortes agora, ligue para o <b>CVV, no 188</b> (gratuito, 24 horas) ou procure o pronto-socorro mais próximo.</div>';
+  if (CFG.supportWhatsapp) h += '<p class="foot">Dúvidas? <a href="https://wa.me/'+esc(CFG.supportWhatsapp)+'">Fale com a recepção</a></p>';
+  app.innerHTML = h + '</div>';
+  S = { medica:null, step:0, a:{} };
+}
+render();
+})();
+</script>
+</body>
+</html>
